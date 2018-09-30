@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <title>Gerenciamento de Tarefas</title>
+  <link rel="stylesheet" type="text/css" href="../styles/min.css/gerenciamento-projetos.min.css" />
+</head>
+<body>
+
+
+  <div data-ng-app="appGerenciamento" data-ng-controller="ctrlGerenciamento" data-ng-cloak id="main-container">
+    <ul class="abas">
+      <li data-ng-class="liDashboard" data-ng-click="selectAba('dashboard')">Dashboard</li>
+      <li data-ng-class="liClientes" data-ng-click="selectAba('clientes')">Clientes</li>
+      <li data-ng-class="liProjetos" data-ng-click="selectAba('projetos')">Projetos</li>
+      <li data-ng-class="liTarefas" data-ng-click="selectAba('tarefas')">Tarefas</li>
+    </ul>
+    <div class="linha-abas"></div>
+    <div class="aba-conteudo" data-ng-class="dashboardAba">
+      <div id="contadores">
+        <div class="contador" data-ng-repeat="contador in contadores">
+          <div class="contador-titulo">{{contador.Title}}</div>
+          <div class="contador-quantidade">{{contador.Quantidade}}</div>
+        </div>
+        <div class="contador add-contador" data-ng-click="addContadorPopUp()">
+          <div class="contador-mais">+</div>
+        </div>
+      </div>
+      <div class="grafico-tabela">
+        <div id="projetos">
+          <div class="projetos-tabela">
+            <table class="tabela-projetos">
+              <tr class="cabecalho-tabela">
+                <th>Cliente</th>
+                <th>Projeto</th>
+                <th>Gerente do Projeto</th>
+                <th>Líder Técnico</th>
+                <th>Tarefas</th>
+                <th>Entrega</th>
+              </tr>
+              <tr data-ng-repeat="projeto in projetosGeral" class="projetos-carregados">
+                <td>{{projeto.Cliente}}</td>
+                <td>{{projeto.Title}}</td>
+                <td>{{projeto.Gerente}}</td>
+                <td>{{projeto.Tecnico}}</td>
+                <td class="tarefas-percent">{{projeto.Tarefas}}<div class="tarefas-barra">
+                  <div class="barra-tarefas-concluida" style="transition: 1s; width: {{projeto.Tarefas}}"></div>
+                </div>
+                </td>
+                <td>{{projeto.Entrega}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div id="grafico-container">
+          <div class="grafico-titulo">Tarefas</div>
+          <div id="grafico">
+            <div class="graficos" data-ng-repeat="dado in dados">
+              <div class="grafico">
+                <div class="grafico-sobra grafico-dados"style=" height: {{dado.Sobra}}%"></div>
+                  <div class="grafico-concluidas grafico-dados" data-tooltip="{{dado.Concluidas}}" style="transition: 1s; height: {{dado.Concluidas}}%"></div>
+                  <div class="grafico-andamento grafico-dados" data-tooltip="{{dado.Andamento}}" style="transition: 1s; height: {{dado.Andamento}}%"></div>
+                  <div class="grafico-aguardo grafico-dados" data-tooltip="{{dado.Aguardo}}" style="transition: 1s; height: {{dado.Aguardo}}%"></div>
+                  <div class="grafico-vencidas grafico-dados" data-tooltip="{{dado.Vencidas}}" style="transition: 1s; height: {{dado.Vencidas}}%"></div>
+                </div>
+              <div class="grafico-projeto">{{dado.Title}} - {{dado.Cliente}}</div>
+            </div>
+          </div>
+          <div class="legenda-grafico">
+            <div class="legenda legenda-concluidas">
+              <div class="legenda-cor"></div>
+              Concluídas
+            </div>
+            <div class="legenda legenda-andamento">
+              <div class="legenda-cor"></div>
+              Em Andamento
+            </div>
+            <div class="legenda legenda-aguardo">
+              <div class="legenda-cor"></div>
+              Em Aguardo
+            </div>
+            <div class="legenda legenda-vencidas">
+              <div class="legenda-cor"></div>
+              Vencidas
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="aba-conteudo" data-ng-class="clientesAba">
+      <div id="clientes-tabela">
+        <div class="clientes-tabela">
+          <table class="tabela-clientes">
+            <tr class="cabecalho-tabela">
+              <th>Cliente</th>
+              <th>Projetos Ativos</th>
+              <th>Horas Contratadas</th>
+              <th>Horas Restantes</th>
+              <th>Horas Usadas</th>
+            </tr>
+            <tr data-ng-repeat="cliente in clientes" class="clientes-carregados">
+              <td>{{cliente.Title}}</td>
+              <td>{{cliente.Projetos}}</td>
+              <td>{{cliente.HorasContratadas}}</td>
+              <td>{{cliente.HorasRestantes}}</td>
+              <td class="clientes-percent">{{cliente.HorasUsadas}}<div class="clientes-barra">
+                <div class="barra-clientes-concluida" style="transition: 1s; width: {{cliente.HorasUsadas}}"></div>
+              </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="aba-conteudo" data-ng-class="projetosAba">
+      <div id="projeto-aba-tabela">
+        <div class="projeto-aba-tabela">
+          <table class="tabela-projeto-aba">
+            <tr class="cabecalho-tabela">
+              <th>Nome</th>
+              <th>Cliente</th>
+              <th>Data Ínicio</th>
+              <th>Data Prazo</th>
+              <th>Data de Entrega</th>
+              <th>Atraso</th>
+              <th>Horas Contratadas</th>
+              <th>Horas Restantes</th>
+              <th>Horas Usadas</th>
+            </tr>
+            <tr data-ng-repeat="projeto in projetos" class="projeto-aba-carregados">
+              <td>{{projeto.Title}}</td>
+              <td>{{projeto.Cliente}}</td>
+              <td>{{projeto.DataInicio}}</td>
+              <td>{{projeto.DataPrazo}}</td>
+              <td>{{projeto.DataEntrega}}</td>
+              <td>{{projeto.Atraso}}</td>
+              <td>{{projeto.HorasContratadas}}</td>
+              <td>{{projeto.HorasRestantes}}</td>
+              <td class="clientes-percent">{{projeto.HorasUsadas}}<div class="projeto-aba-barra">
+                <div class="barra-projeto-aba-concluida" style="transition: 1s; width: {{projeto.HorasUsadas}}"></div>
+              </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="aba-conteudo" data-ng-class="tarefasAba">
+    </div>
+    <div id="popup-sucsess" title="Novo Bloco" data-ng-show="popupNovoBloco">
+      <div class="popup-sucsess-front">
+        <div class="popup-sucsess-title">Novo Bloco</div>
+        <hr class="popup-sucsess-line" />
+        <div class="popup-sucsess-ok">Salvar</div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="../plugins/angular.min.js"></script>
+  <script type="text/javascript" src="../scripts/min.js/gerenciamento-projetos.min.js"></script>
+</body>
+</html>

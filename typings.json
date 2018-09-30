@@ -1,0 +1,9 @@
+{
+  "globalDevDependencies": {
+    "gulp": "registry:dt/gulp#3.8.0+20160907112908",
+    "jquery": "registry:dt/jquery#1.10.0+20160620094458",
+    "node": "registry:dt/node#6.0.0+20161110151007",
+    "typescript": "registry:dt/typescript#0.4.0+20160317120654",
+    "vinyl": "registry:dt/vinyl#1.2.0+20160924121322"
+  }
+}
