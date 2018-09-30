@@ -154,7 +154,14 @@ body {
 #grafico {
   display: flex;
   justify-content: center;
-  height: 80%; }
+  height: 100%;
+  width: 1700px; }
+
+#grafico-overflow {
+  overflow-x: auto;
+  height: 80%;
+  width: calc(100% -30px);
+  margin: 15px; }
 
 .grafico {
   height: 100%; }
@@ -237,7 +244,7 @@ body {
 
 #clientes-tabela {
   width: calc(98% - 10px);
-  height: 620px;
+  height: 800px;
   border: 1px solid #ececec;
   border-radius: 8px;
   background-color: white;
@@ -280,7 +287,7 @@ body {
 
 #projeto-aba-tabela {
   width: calc(98% - 10px);
-  height: 620px;
+  height: 800px;
   border: 1px solid #ececec;
   border-radius: 8px;
   background-color: white;
@@ -381,3 +388,19 @@ body {
     position: absolute;
     bottom: 20px;
     right: 20px; }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px; }
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; }
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; }
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; }

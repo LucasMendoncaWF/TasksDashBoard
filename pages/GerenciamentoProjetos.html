@@ -1,14 +1,11 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="pt-br">
 <head>
   <meta charset="utf-8" />
   <title>Gerenciamento de Tarefas</title>
   <link rel="stylesheet" type="text/css" href="../styles/min.css/gerenciamento-projetos.min.css" />
 </head>
 <body>
-
-
   <div data-ng-app="appGerenciamento" data-ng-controller="ctrlGerenciamento" data-ng-cloak id="main-container">
     <ul class="abas">
       <li data-ng-class="liDashboard" data-ng-click="selectAba('dashboard')">Dashboard</li>
@@ -37,34 +34,36 @@
                 <th>Gerente do Projeto</th>
                 <th>Líder Técnico</th>
                 <th>Tarefas</th>
-                <th>Entrega</th>
+                <th>Prazo</th>
               </tr>
               <tr data-ng-repeat="projeto in projetosGeral" class="projetos-carregados">
                 <td>{{projeto.Cliente}}</td>
                 <td>{{projeto.Title}}</td>
                 <td>{{projeto.Gerente}}</td>
                 <td>{{projeto.Tecnico}}</td>
-                <td class="tarefas-percent">{{projeto.Tarefas}}<div class="tarefas-barra">
-                  <div class="barra-tarefas-concluida" style="transition: 1s; width: {{projeto.Tarefas}}"></div>
-                </div>
+                <td class="tarefas-percent">
+                  {{projeto.Tarefas}}<div class="tarefas-barra">
+                    <div class="barra-tarefas-concluida" style="transition: 1s; width: {{projeto.Tarefas}}"></div>
+                  </div>
                 </td>
-                <td>{{projeto.Entrega}}</td>
+                <td>{{projeto.Prazo}}</td>
               </tr>
             </table>
           </div>
         </div>
         <div id="grafico-container">
           <div class="grafico-titulo">Tarefas</div>
-          <div id="grafico">
-            <div class="graficos" data-ng-repeat="dado in dados">
-              <div class="grafico">
-                <div class="grafico-sobra grafico-dados"style=" height: {{dado.Sobra}}%"></div>
-                  <div class="grafico-concluidas grafico-dados" data-tooltip="{{dado.Concluidas}}" style="transition: 1s; height: {{dado.Concluidas}}%"></div>
-                  <div class="grafico-andamento grafico-dados" data-tooltip="{{dado.Andamento}}" style="transition: 1s; height: {{dado.Andamento}}%"></div>
-                  <div class="grafico-aguardo grafico-dados" data-tooltip="{{dado.Aguardo}}" style="transition: 1s; height: {{dado.Aguardo}}%"></div>
-                  <div class="grafico-vencidas grafico-dados" data-tooltip="{{dado.Vencidas}}" style="transition: 1s; height: {{dado.Vencidas}}%"></div>
+          <div id="grafico-overflow">
+            <div id="grafico">
+              <div class="graficos" data-ng-repeat="dado in dados">
+                <div class="grafico">
+                  <div class="grafico-concluidas grafico-dados" data-tooltip="{{dado.Concluidas}}" style="transition: 1s; height: {{dado.Concluidas}}"></div>
+                  <div class="grafico-andamento grafico-dados" data-tooltip="{{dado.Andamento}}" style="transition: 1s; height: {{dado.Andamento}}"></div>
+                  <div class="grafico-aguardo grafico-dados" data-tooltip="{{dado.Aguardo}}" style="transition: 1s; height: {{dado.Aguardo}}"></div>
+                  <div class="grafico-vencidas grafico-dados" data-tooltip="{{dado.Vencidas}}" style="transition: 1s; height: {{dado.Vencidas}}"></div>
                 </div>
-              <div class="grafico-projeto">{{dado.Title}} - {{dado.Cliente}}</div>
+                <div class="grafico-projeto">{{dado.Title}} - {{dado.Cliente}}</div>
+              </div>
             </div>
           </div>
           <div class="legenda-grafico">
@@ -104,9 +103,10 @@
               <td>{{cliente.Projetos}}</td>
               <td>{{cliente.HorasContratadas}}</td>
               <td>{{cliente.HorasRestantes}}</td>
-              <td class="clientes-percent">{{cliente.HorasUsadas}}<div class="clientes-barra">
-                <div class="barra-clientes-concluida" style="transition: 1s; width: {{cliente.HorasUsadas}}"></div>
-              </div>
+              <td class="clientes-percent">
+                {{cliente.HorasUsadas}}<div class="clientes-barra">
+                  <div class="barra-clientes-concluida" style="transition: 1s; width: {{cliente.HorasUsadas}}"></div>
+                </div>
               </td>
             </tr>
           </table>
@@ -137,9 +137,10 @@
               <td>{{projeto.Atraso}}</td>
               <td>{{projeto.HorasContratadas}}</td>
               <td>{{projeto.HorasRestantes}}</td>
-              <td class="clientes-percent">{{projeto.HorasUsadas}}<div class="projeto-aba-barra">
-                <div class="barra-projeto-aba-concluida" style="transition: 1s; width: {{projeto.HorasUsadas}}"></div>
-              </div>
+              <td class="clientes-percent">
+                {{projeto.HorasUsadasPercent}}<div class="projeto-aba-barra">
+                  <div class="barra-projeto-aba-concluida" style="transition: 1s; width: {{projeto.HorasUsadasPercent}}"></div>
+                </div>
               </td>
             </tr>
           </table>
@@ -147,6 +148,28 @@
       </div>
     </div>
     <div class="aba-conteudo" data-ng-class="tarefasAba">
+      <div id="projeto-aba-tabela">
+        <div class="projeto-aba-tabela">
+          <table class="tabela-projeto-aba">
+            <tr class="cabecalho-tabela">
+              <th>Projeto</th>
+              <th>Tarefa</th>
+              <th>Atribuido</th>
+              <th>Data Inicial</th>
+              <th>Data de Entrega</th>
+              <th>Status</th>
+            </tr>
+            <tr data-ng-repeat="tarefa in tarefas" class="projeto-aba-carregados">
+              <td>{{tarefa.Projeto}}</td>
+              <td>{{tarefa.Tarefa}}</td>
+              <td>{{tarefa.Atribuido}}</td>
+              <td>{{tarefa.Inicio}}</td>
+              <td>{{tarefa.Entrega}}</td>
+              <td>{{tarefa.Status}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
     <div id="popup-sucsess" title="Novo Bloco" data-ng-show="popupNovoBloco">
       <div class="popup-sucsess-front">
@@ -156,6 +179,7 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="../plugins/jquery.min.js"></script>
   <script type="text/javascript" src="../plugins/angular.min.js"></script>
   <script type="text/javascript" src="../scripts/min.js/gerenciamento-projetos.min.js"></script>
 </body>
