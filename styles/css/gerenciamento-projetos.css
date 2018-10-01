@@ -49,7 +49,7 @@ body {
   flex-wrap: wrap; }
 
 .contador {
-  width: 250px;
+  width: calc(14.9% - 20px);
   height: 112px;
   padding: 20px;
   border: 1px solid #ececec;
@@ -363,31 +363,65 @@ body {
   opacity: 1;
   z-index: 1; }
 
-#popup-sucsess {
+#popup-success {
   position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5); }
-  #popup-sucsess .popup-sucsess-front {
-    width: 25%;
-    height: 150px;
+  #popup-success .popup-success-front {
+    width: 60%;
     position: absolute;
-    left: 35%;
+    left: 20%;
     background-color: #fff;
     top: 15%;
     border-radius: 10px;
     padding: 20px; }
-  #popup-sucsess .popup-sucsess-title {
+  #popup-success .popup-success-title {
     font-size: 20px; }
-  #popup-sucsess .popup-sucsess-message {
+  #popup-success .popup-success-message {
     font-size: 18px; }
-  #popup-sucsess .popup-sucsess-ok {
+  #popup-success .popup-success-ok {
     width: 80px;
     position: absolute;
     bottom: 20px;
-    right: 20px; }
+    right: 20px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #dadade;
+    cursor: pointer; }
+  #popup-success .popup-success-ok:hover {
+    background-color: #f1f1f2; }
+
+.popup-success-body {
+  display: flex;
+  height: 200px; }
+
+.campo {
+  padding: 10px; }
+  .campo input, .campo select {
+    width: 100%;
+    border: 1px solid #dadade;
+    font-size: 15px; }
+  .campo select {
+    height: 30px; }
+  .campo input {
+    height: 26px; }
+
+.comparacao {
+  display: flex;
+  width: 70%; }
+  .comparacao .campo {
+    width: 33%; }
+
+.popup-success-separacao {
+  width: 2px;
+  height: 80%;
+  background-color: #dadade; }
+
+.campos {
+  margin: 10px; }
 
 /* width */
 ::-webkit-scrollbar {

@@ -2,6 +2,8 @@
 appGerenciamento.controller("ctrlGerenciamento", ["$scope", ($scope) => {
 
   let today = new Date();
+  $scope.listaNaoSelecionada = true;
+  $scope.popupNovoBloco = false;
 
   //Carrega os projetos existentes
   $scope.projetos = [];
@@ -126,35 +128,35 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", ($scope) => {
         percentConcluida = 100;
       }
       $scope.dados.push(
-        { Title: projeto.Title, Cliente: projeto.Cliente, Concluidas: percentConcluida.toFixed(2) + "%", Andamento: percentAndamento.toFixed(2) + "%", Aguardo: percentAguardo.toFixed(2) + "%", Vencidas: percentvencida.toFixed(2) + "%" }
+        { Title: projeto.Title, Cliente: projeto.Cliente, ConcluidasCount: concluidas, AndamentoCount: andamento, AguardoCount: aguardo, VencidasCount: vencidas, Concluidas: percentConcluida.toFixed(2) + "%", Andamento: percentAndamento.toFixed(2) + "%", Aguardo: percentAguardo.toFixed(2) + "%", Vencidas: percentvencida.toFixed(2) + "%" }
       );
     }
     $scope.$apply();
+    //Alimenta os contadores na pagina de dashboard
+    $scope.alimentaContadores();
+    return $scope.dados;
   }
 
   $scope.contadores = [];
   $scope.alimentaContadores = () => {
     $scope.contadores = [];
     var totalTarefas = 0;
-    for (var dados of $scope.dados) {
-      totalTarefas += dados.Concluidas + dados.Andamento + dados.Aguardo + dados.Vencidas;
-    }
-    var totalAtrasadas = 0;
-    for (var dados of $scope.dados) {
-      totalAtrasadas += dados.Vencidas;
-    }
-    var totalAndamento = 0;
-    for (var dados of $scope.dados) {
-      totalAndamento += dados.Andamento;
-    }
     var totalConcluido = 0;
+    var totalAtrasadas = 0;
+    var totalAndamento = 0;
+    var totalAguardo = 0;
     for (var dados of $scope.dados) {
-      totalConcluido += dados.Concluidas;
+      totalTarefas += dados.ConcluidasCount + dados.AndamentoCount + dados.AguardoCount + dados.VencidasCount;
+      totalAtrasadas += dados.VencidasCount;
+      totalAndamento += dados.AndamentoCount;
+      totalConcluido += dados.ConcluidasCount;
+      totalAguardo += dados.AguardoCount;
     }
     $scope.contadores.push(
       { Title: "Total de tarefas", Quantidade: totalTarefas },
       { Title: "Tarefas atrasadas", Quantidade: totalAtrasadas },
       { Title: "Tarefas em andamento", Quantidade: totalAndamento },
+      { Title: "Tarefas em aguardo", Quantidade: totalAguardo },
       { Title: "Tarefas concluídas", Quantidade: totalConcluido });
     $scope.$apply();
     return $scope.contadores;
@@ -217,10 +219,221 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", ($scope) => {
     });
   });
 
-  $scope.popupNovoBloco = false;
-
   $scope.addContadorPopUp = () => {
     $scope.popupNovoBloco = true;
+  }
+  $scope.opcoesColunas = [];
+  $scope.exibeOpcoesColunas = () => {
+    $scope.opcoesColunas = [];
+    $scope.listaNaoSelecionada = false;
+    switch ($scope.listaSelect) {
+      case "Clientes":
+        $scope.opcoesColunas.push(
+          {
+            Title: "Nome",
+            Value: "Title",
+            Type: "texto"
+          }, {
+            Title: "Quantidade de Projetos",
+            Value: "Projetos",
+            Type: "numero"
+          }, {
+            Title: "Horas Contratadas",
+            Value: "HorasContratadas",
+            Type: "numero"
+          }, {
+            Title: "Horas Restantes",
+            Value: "HorasRestantes",
+            Type: "numero"
+          }, {
+            Title: "Horas Usadas (Percentual)",
+            Value: "HorasUsadas",
+            Type: "porcentagem"
+          }
+        );
+        break;
+      case "Projetos":
+        $scope.opcoesColunas.push(
+          {
+            Title: "Nome",
+            Value: "Title",
+            Type: "texto"
+          }, {
+            Title: "Cliente",
+            Value: "Cliente",
+            Type: "texto"
+          }, {
+            Title: "Gerente do Projeto",
+            Value: "GerenteProjeto",
+            Type: "texto"
+          }, {
+            Title: "Lider Técnico do Projeto",
+            Value: "LiderTecnico",
+            Type: "texto"
+          }, {
+            Title: "Horas Contratadas",
+            Value: "HorasContratadas",
+            Type: "numero"
+          }, {
+            Title: "Horas Restantes",
+            Value: "HorasRestantes",
+            Type: "numero"
+          }, {
+            Title: "Horas Usadas",
+            Value: "HorasUsadas",
+            Type: "numero"
+          }, {
+            Title: "Horas Usadas (Percentual)",
+            Value: "HorasUsadasPercent",
+            Type: "porcentagem"
+          }, {
+            Title: "Data de Ínicio",
+            Value: "DataInicio",
+            Type: "data"
+          }, {
+            Title: "Data Prazo",
+            Value: "DataPrazo",
+            Type: "data"
+          }, {
+            Title: "Data de Entrega",
+            Value: "DataEntrega",
+            Type: "data"
+          }, {
+            Title: "Atraso (Sim/Não)",
+            Value: "Atraso",
+            Type: "sim/nao"
+          }
+        );
+        break;
+      case "Tarefas":
+        $scope.opcoesColunas.push(
+          {
+            Title: "Nome",
+            Value: "Title",
+            Type: "texto"
+          }, {
+            Title: "Projeto",
+            Value: "Projeto",
+            Type: "texto"
+          }, {
+            Title: "Atribuido",
+            Value: "Atribuido",
+            Type: "texto"
+          }, {
+            Title: "Data de Ínicio",
+            Value: "Inicio",
+            Type: "data"
+          }, {
+            Title: "Data de Entrega",
+            Value: "Entrega",
+            Type: "data"
+          }, {
+            Title: "Status da Tarefa",
+            Value: "Status",
+            Type: "status"
+          }
+        );
+        break;
+    }
+  }
+  $scope.comparacoes = [];
+  $scope.alteraColuna = () => {
+    $scope.comparacoes = [];
+    $scope.comparacaoSelect = "";
+    if ($scope.colunaSelect.Type != 'status' && $scope.colunaSelect.Type != 'sim/nao' && $scope.colunaSelect.Type != 'texto') {
+      $scope.comparacoes.push(
+        {
+          Title: "Igual"
+        }, {
+          Title: "Diferente"
+        },
+        {
+          Title: "Maior"
+        }, {
+          Title: "Menor"
+        }, {
+          Title: "Maior ou Igual"
+        }, {
+          Title: "Menor ou Igual"
+        },
+      );
+    } else {
+      $scope.comparacoes.push(
+        {
+          Title: "Igual"
+        }, {
+          Title: "Diferente"
+        }
+      );
+    }
+  }
+
+  $scope.salvarContador = () => {
+    let totalcontador = 0;
+    //------------------------------------------Clientes
+    if ($scope.listaSelect == "Clientes") {
+      //--------------------------------Texto
+      if ($scope.colunaSelect.Type == "texto") {
+        if ($scope.comparacaoSelect.Title == "Igual") {
+          for (let cliente of $scope.clientes) {
+            if (cliente[$scope.colunaSelect.Value] == $scope.compararTexto) {
+              totalcontador++;
+            }
+          }
+        } else {
+          for (let cliente of $scope.clientes) {
+            if (cliente[$scope.colunaSelect.Value] != $scope.compararTexto) {
+              totalcontador++;
+            }
+          }
+        }
+      }
+    }
+    //------------------------------------------Projetos
+    if ($scope.listaSelect == "Projetos") {
+      //--------------------------------Texto
+      if ($scope.colunaSelect.Type == "texto") {
+        if ($scope.comparacaoSelect.Title == "Igual") {
+          for (let projeto of $scope.projetos) {
+            if (projeto[$scope.colunaSelect.Value] == $scope.compararTexto) {
+              totalcontador++;
+            }
+          }
+        } else {
+          for (let projeto of $scope.projetos) {
+            if (projeto[$scope.colunaSelect.Value] != $scope.compararTexto) {
+              totalcontador++;
+            }
+          }
+        }
+      }
+    }
+    //------------------------------------------Tarefas
+    if ($scope.listaSelect == "Tarefas") {
+      //--------------------------------Texto
+      if ($scope.colunaSelect.Type == "texto") {
+        if ($scope.comparacaoSelect.Title == "Igual") {
+          for (let tarefa of $scope.tarefas) {
+            if (tarefa[$scope.colunaSelect.Value] == $scope.compararTexto) {
+              totalcontador++;
+            }
+          }
+        } else {
+          for (let tarefa of $scope.tarefas) {
+            if (tarefa[$scope.colunaSelect.Value] != $scope.compararTexto) {
+              totalcontador++;
+            }
+          }
+        }
+      }
+    }
+    $scope.contadores.push({ Title: $scope.tituloBloco, Quantidade: totalcontador });
+    $scope.popupNovoBloco = false;
+    $scope.listaSelect = "";
+    $scope.tituloBloco = "";
+    $scope.colunaSelect = "";
+    $scope.comparacaoSelect = "";
+    $scope.listaNaoSelecionada = true;
   }
 
 }]);

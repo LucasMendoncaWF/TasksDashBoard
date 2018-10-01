@@ -57,7 +57,7 @@
       "Nome": "projeto 4",
       "Cliente": "cliente 3",
       "HorasContratadas": 10,
-      "HorasUsadas": 0,
+      "HorasUsadas": 3,
       "LiderTecnico": "tecnico 2",
       "GerenteProjeto": "Gerente 1",
       "Inicio": "28/04/2018",
@@ -122,6 +122,30 @@
   ],
   "Tarefas": [
     {
+      "Projeto": "projeto 1",
+      "Tarefa": "tarefa 1.0",
+      "Atribuido": "user 1",
+      "Inicio": "02/12/2018",
+      "Entrega": "01/02/2019",
+      "Status": "Em Aguardo"
+    },
+    {
+      "Projeto": "projeto 1",
+      "Tarefa": "tarefa 1.1",
+      "Atribuido": "user 1",
+      "Inicio": "02/12/2018",
+      "Entrega": "01/02/2019",
+      "Status": "Em Andamento"
+    },
+    {
+      "Projeto": "projeto 1",
+      "Tarefa": "tarefa 1.2",
+      "Atribuido": "user 1",
+      "Inicio": "02/12/2018",
+      "Entrega": "01/02/2019",
+      "Status": "Concluida"
+    },
+    {
       "Projeto": "projeto 4",
       "Tarefa": "tarefa 1",
       "Atribuido": "user 1",
@@ -143,7 +167,7 @@
       "Atribuido": "user 3",
       "Inicio": "02/12/2018",
       "Entrega": "01/02/2019",
-      "Status": "Concluida"
+      "Status": "Vencida"
     },
     {
       "Projeto": "projeto 6",
