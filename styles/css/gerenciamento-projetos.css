@@ -90,7 +90,7 @@ body {
 
 #projetos {
   width: calc(50% - 10px);
-  height: 600px;
+  height: 580px;
   background-color: white;
   border: 1px solid #ececec;
   border-radius: 8px;
@@ -141,7 +141,7 @@ body {
 
 #grafico-container {
   width: calc(50% - 10px);
-  height: 600px;
+  height: 580px;
   border: 1px solid #ececec;
   border-radius: 8px;
   background-color: white;
@@ -244,7 +244,7 @@ body {
 
 #clientes-tabela {
   width: calc(98% - 10px);
-  height: 780px;
+  height: 740px;
   border: 1px solid #ececec;
   border-radius: 8px;
   background-color: white;
@@ -287,7 +287,7 @@ body {
 
 #projeto-aba-tabela {
   width: calc(98% - 10px);
-  height: 780px;
+  height: 740px;
   border: 1px solid #ececec;
   border-radius: 8px;
   background-color: white;
