@@ -65,7 +65,7 @@
 }
 
 .contador {
-  width: calc(14.9% - 20px);
+  width: calc(14.44% - 10px);
   height: 112px;
   padding: 20px;
   border: 1px solid #ececec;
@@ -118,7 +118,7 @@
 
 #projetos {
   width: calc(50% - 10px);
-  height: 620px;
+  height: 600px;
   background-color: white;
   border: 1px solid #ececec;
   border-radius: 8px;
@@ -184,7 +184,7 @@
 
 #grafico-container {
   width: calc(50% - 10px);
-  height: 620px;
+  height: 600px;
   border: 1px solid #ececec;
   border-radius: 8px;
   background-color: white;
@@ -320,7 +320,7 @@
 
 #clientes-tabela {
   width: calc(98% - 10px);
-  height: 800px;
+  height: 780px;
   border: 1px solid #ececec;
   border-radius: 8px;
   background-color: white;
@@ -376,7 +376,7 @@
 
 #projeto-aba-tabela {
   width: calc(98% - 10px);
-  height: 800px;
+  height: 780px;
   border: 1px solid #ececec;
   border-radius: 8px;
   background-color: white;
@@ -467,7 +467,7 @@
   z-index: 1;
 }
 
-#popup-success {
+#popup {
   position: fixed;
   width: 100%;
   height: 100%;
@@ -475,7 +475,7 @@
   left: 0;
   background-color: rgba(0,0,0, 0.5);
 
-  .popup-success-front {
+  .popup-front {
     width: 60%;
     position: absolute;
     left: 20%;
@@ -485,31 +485,41 @@
     padding: 20px;
   }
 
-  .popup-success-title {
+  .popup-title {
     font-size: 20px;
+    font-size: 24px;
+    padding-left: 20px;
   }
 
-  .popup-success-message {
+  .popup-message {
     font-size: 18px;
   }
 
-  .popup-success-ok {
+  .popup-ok, .popup-cancelar {
     width: 80px;
     position: absolute;
-    bottom: 20px;
-    right: 20px;
     text-align: center;
     padding: 5px;
     border: 1px solid #dadade;
     cursor: pointer;
   }
 
-  .popup-success-ok:hover {
+  .popup-ok {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .popup-cancelar {
+    bottom: 20px;
+    right: 120px;
+  }
+
+  .popup-ok:hover, .popup-cancelar:hover {
     background-color: #f1f1f2;
   }
 }
 
-.popup-success-body {
+.popup-body {
   display: flex;
   height: 200px;
 }
@@ -519,8 +529,14 @@
 
   input, select {
     width: 100%;
-    border: 1px solid #dadade;
     font-size: 15px;
+    border: 0px;
+    border-bottom: 1px solid #dadade;
+  }
+
+  select:disabled {
+    background-color: #f1f1f2;
+    cursor: not-allowed;
   }
 
   select {
@@ -541,7 +557,7 @@
   }
 }
 
-.popup-success-separacao {
+.popup-separacao {
   width: 2px;
   height: 80%;
   background-color: #dadade;
@@ -551,22 +567,82 @@
   margin: 10px;
 }
 
-/* width */
+.alert {
+  color: red;
+  margin-left: 20px;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.ui-widget-content {
+  background-color: white;
+}
+
+.ui-widget-header {
+  border: 1px solid white;
+  background: white url(images/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x;
+  color: #a0a0a0;
+}
+
+.ui-state-hover {
+  border-color: white;
+  background-color: white;
+}
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+  background-color: white;
+  cursor: pointer;
+}
+
+.ui-datepicker-prev::before {
+  content: '<';
+  font-family: 'Segoe UI';
+  width: 20px;
+  color: #bebebf;
+  height: 20px;
+  position: absolute;
+  bottom: 18px;
+  right: 10px;
+  font-size: 30px;
+  display: block;
+}
+
+.ui-datepicker-next::before {
+  content: '>';
+  font-family: 'Segoe UI';
+  width: 20px;
+  color: #bebebf;
+  height: 20px;
+  position: absolute;
+  bottom: 18px;
+  right: 10px;
+  font-size: 30px;
+  display: block;
+}
+
+.ui-button:focus, .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight, .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus, .ui-button:hover, .ui-button:focus {
+  border: 0px;
+  color: #f1f1f2;
+  background-color: #ccc;
+  color: white;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default {
+  border: 0px;
+  font-weight: bold;
+  color: #828282;
 }

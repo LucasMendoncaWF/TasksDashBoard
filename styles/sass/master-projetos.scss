@@ -1,0 +1,22 @@
+﻿body {
+  margin: 0;
+
+  #master-projetos {
+    display: flex;
+    background-color: #c7c7c7;
+    padding: 12px;
+    font-size: 18px;
+    color: white;
+    font-weight: 700;
+
+    .master-back {
+      right: 12px;
+      position: absolute;
+      cursor: pointer;
+
+      &:hover {
+        color: #f1f1f2;
+      }
+    }
+  }
+}

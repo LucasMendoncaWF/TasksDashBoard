@@ -3,9 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <title>Gerenciamento de Tarefas</title>
-  <link rel="stylesheet" type="text/css" href="../styles/min.css/gerenciamento-projetos.min.css" />
+  <link rel="stylesheet" type="text/css" href="../plugins/jquery-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="../styles/master-projetos.min.css" />
+  <link rel="stylesheet" type="text/css" href="../styles/gerenciamento-projetos.min.css" />
 </head>
 <body>
+  <div id="master-projetos">
+    Projeto - Dashboard de tarefas
+    <div class="master-back" onclick="location.href= 'http://lucasmendoncapportfolio.atwebpages.com/'">Voltar</div>
+  </div>
   <div data-ng-app="appGerenciamento" data-ng-controller="ctrlGerenciamento" data-ng-cloak id="main-container">
     <ul class="abas">
       <li data-ng-class="liDashboard" data-ng-click="selectAba('dashboard')">Dashboard</li>
@@ -171,11 +177,10 @@
         </div>
       </div>
     </div>
-    <div id="popup-success" title="Novo Bloco" data-ng-show="popupNovoBloco">
-      <div class="popup-success-front">
-        <div class="popup-success-title">Novo Bloco</div>
-        <hr class="popup-success-line" />
-        <div class="popup-success-body">
+    <div id="popup" title="Novo Bloco" data-ng-show="popupNovoBloco">
+      <div class="popup-front">
+        <div class="popup-title">Novo Bloco</div>
+        <div class="popup-body">
           <div class="campos">
             <div class="campo">
               <label>Título do Bloco</label>
@@ -190,7 +195,7 @@
               </select>
             </div>
           </div>
-          <div class="popup-success-separacao campos"></div>
+          <div class="popup-separacao campos"></div>
           <div class="campos comparacao">
             <div class="campo">
               <label>Coluna</label>
@@ -209,7 +214,7 @@
             </div>
             <div class="campo" data-ng-show="colunaSelect.Type == 'porcentagem'">
               <label>De:</label>
-              <input type="text" maxlength="3" data-ng-model="compararPorcentagem" data-ng-disabled="listaNaoSelecionada" />
+              <input type="text" id="percentual-campo" maxlength="7" data-ng-model="compararPorcentagem" data-ng-disabled="listaNaoSelecionada" />
             </div>
             <div class="campo" data-ng-show="colunaSelect.Type == 'numero'">
               <label>De:</label>
@@ -217,7 +222,7 @@
             </div>
             <div class="campo" data-ng-show="colunaSelect.Type == 'data'">
               <label>De:</label>
-              <input type="date" data-ng-model="compararData" data-ng-disabled="listaNaoSelecionada" />
+              <input type="text" id="datepicker" data-ng-model="compararData" data-ng-disabled="listaNaoSelecionada" readonly/>
             </div>
             <div class="campo" data-ng-show="colunaSelect.Type == 'sim/nao'">
               <label>De:</label>
@@ -226,23 +231,27 @@
                 <option>Não</option>
               </select>
             </div>
-            <div class="campo" data-ng-if="colunaSelect.Type == 'status'">
+            <div class="campo" data-ng-show="colunaSelect.Type == 'status'">
               <label>De:</label>
               <select type="date" data-ng-model="compararStatus" data-ng-disabled="listaNaoSelecionada">
                 <option>Em Aguardo</option>
                 <option>Em Andamento</option>
-                <option>Concluída</option>
+                <option>Concluida</option>
                 <option>Vencida</option>
               </select>
             </div>
           </div>
         </div>
-        <div class="popup-success-ok" data-ng-click="salvarContador()">Salvar</div>
+        <div class="popup-ok" data-ng-click="salvarContador()">Salvar</div>
+        <div class="popup-cancelar" data-ng-click="cancelarContador()">Cancelar</div>
+        <div data-ng-show="alertCampos" class="alert">Por favor preencha todos os campos.</div>
       </div>
     </div>
   </div>
   <script type="text/javascript" src="../plugins/jquery.min.js"></script>
+  <script type="text/javascript" src="../plugins/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="../plugins/jquery.mask.min.js"></script>
   <script type="text/javascript" src="../plugins/angular.min.js"></script>
-  <script type="text/javascript" src="../scripts/min.js/gerenciamento-projetos.min.js"></script>
+  <script type="text/javascript" src="../scripts/gerenciamento-projetos.min.js"></script>
 </body>
 </html>

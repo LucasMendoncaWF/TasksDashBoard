@@ -1,3 +1,7 @@
+$('#percentual-campo').mask('##0,00%', { reverse: true });
+$("#datepicker").datepicker({
+    dateFormat: 'dd/mm/yy'
+});
 var appGerenciamento = angular.module("appGerenciamento", []);
 appGerenciamento.controller("ctrlGerenciamento", ["$scope", function ($scope) {
         var today = new Date();
@@ -8,9 +12,10 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", function ($scope) {
         $scope.alimentaProjetos = function () {
             $scope.projetos = [];
             return $.ajax({
-                url: "http://localhost:3000/Projetos", success: function (projetos) {
-                    for (var _i = 0, projetos_1 = projetos; _i < projetos_1.length; _i++) {
-                        var projeto = projetos_1[_i];
+                url: "http://lucasmendoncapportfolio.atwebpages.com/json/projetos.json", success: function (projetos) {
+                    var projetosObtidos = JSON.parse(projetos);
+                    for (var _i = 0, _a = projetosObtidos['Projetos']; _i < _a.length; _i++) {
+                        var projeto = _a[_i];
                         //calcula as horas restantes e a porcentagem de horas usadas em relação as contratadas
                         var horasrestantes = projeto.HorasContratadas - projeto.HorasUsadas;
                         var horasusadas = ((projeto.HorasUsadas * 100) / projeto.HorasContratadas).toFixed(2) + "%";
@@ -39,14 +44,15 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", function ($scope) {
         $scope.alimentaClientes = function () {
             $scope.clientes = [];
             return $.ajax({
-                url: "http://localhost:3000/Clientes", success: function (clientes) {
-                    for (var _i = 0, clientes_1 = clientes; _i < clientes_1.length; _i++) {
-                        var cliente = clientes_1[_i];
+                url: "http://lucasmendoncapportfolio.atwebpages.com/json/clientes.json", success: function (clientes) {
+                    var clientesObtidos = JSON.parse(clientes);
+                    for (var _i = 0, _a = clientesObtidos['Clientes']; _i < _a.length; _i++) {
+                        var cliente = _a[_i];
                         var projetosCount = 0;
                         var horasUsadas = 0;
                         var horasContratadas = 0;
-                        for (var _a = 0, _b = $scope.projetos; _a < _b.length; _a++) {
-                            var projeto = _b[_a];
+                        for (var _b = 0, _c = $scope.projetos; _b < _c.length; _b++) {
+                            var projeto = _c[_b];
                             if (projeto.Cliente == cliente.Nome) {
                                 projetosCount++;
                                 horasUsadas += projeto.HorasUsadas;
@@ -65,9 +71,10 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", function ($scope) {
         $scope.alimentaTarefas = function () {
             $scope.tarefas = [];
             return $.ajax({
-                url: "http://localhost:3000/Tarefas", success: function (tarefas) {
-                    for (var _i = 0, tarefas_1 = tarefas; _i < tarefas_1.length; _i++) {
-                        var tarefa = tarefas_1[_i];
+                url: "http://lucasmendoncapportfolio.atwebpages.com/json/tarefas.json", success: function (tarefas) {
+                    var tarefasObtiodas = JSON.parse(tarefas);
+                    for (var _i = 0, _a = tarefasObtiodas['Tarefas']; _i < _a.length; _i++) {
+                        var tarefa = _a[_i];
                         $scope.tarefas.push({ Projeto: tarefa.Projeto, Tarefa: tarefa.Tarefa, Atribuido: tarefa.Atribuido, Inicio: tarefa.Inicio, Entrega: tarefa.Entrega, Status: tarefa.Status });
                     }
                 }
@@ -348,74 +355,187 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", function ($scope) {
                 });
             }
         };
+        $scope.alertCampos = false;
         $scope.salvarContador = function () {
-            var totalcontador = 0;
+            //------------------------------------------Clientes
+            var listaCompare = [];
             if ($scope.listaSelect == "Clientes") {
-                if ($scope.colunaSelect.Type == "texto") {
-                    if ($scope.comparacaoSelect.Title == "Igual") {
-                        for (var _i = 0, _a = $scope.clientes; _i < _a.length; _i++) {
-                            var cliente = _a[_i];
-                            if (cliente[$scope.colunaSelect.Value] == $scope.compararTexto) {
-                                totalcontador++;
-                            }
-                        }
-                    }
-                    else {
-                        for (var _b = 0, _c = $scope.clientes; _b < _c.length; _b++) {
-                            var cliente = _c[_b];
-                            if (cliente[$scope.colunaSelect.Value] != $scope.compararTexto) {
-                                totalcontador++;
-                            }
-                        }
-                    }
-                }
+                listaCompare = $scope.clientes;
             }
+            //------------------------------------------Projetos
             if ($scope.listaSelect == "Projetos") {
+                listaCompare = $scope.projetos;
+            }
+            //------------------------------------------Tarefas
+            if ($scope.listaSelect == "Tarefas") {
+                listaCompare = $scope.tarefas;
+            }
+            if ($scope.tituloBloco && $scope.listaSelect && $scope.colunaSelect && $scope.comparacaoSelect) {
+                $scope.comparacao(listaCompare);
+                $scope.alertCampos = false;
+            }
+            else {
+                $scope.alertCampos = true;
+            }
+        };
+        $scope.comparacao = function (listaCompare) {
+            var totalcontador = 0;
+            for (var _i = 0, listaCompare_1 = listaCompare; _i < listaCompare_1.length; _i++) {
+                var comparacao = listaCompare_1[_i];
                 if ($scope.colunaSelect.Type == "texto") {
                     if ($scope.comparacaoSelect.Title == "Igual") {
-                        for (var _d = 0, _e = $scope.projetos; _d < _e.length; _d++) {
-                            var projeto = _e[_d];
-                            if (projeto[$scope.colunaSelect.Value] == $scope.compararTexto) {
-                                totalcontador++;
-                            }
+                        if (comparacao[$scope.colunaSelect.Value] == $scope.compararTexto) {
+                            totalcontador++;
                         }
                     }
                     else {
-                        for (var _f = 0, _g = $scope.projetos; _f < _g.length; _f++) {
-                            var projeto = _g[_f];
-                            if (projeto[$scope.colunaSelect.Value] != $scope.compararTexto) {
-                                totalcontador++;
-                            }
+                        if (comparacao[$scope.colunaSelect.Value] != $scope.compararTexto) {
+                            totalcontador++;
                         }
                     }
                 }
-            }
-            if ($scope.listaSelect == "Tarefas") {
-                if ($scope.colunaSelect.Type == "texto") {
+                else if ($scope.colunaSelect.Type == "status") {
                     if ($scope.comparacaoSelect.Title == "Igual") {
-                        for (var _h = 0, _j = $scope.tarefas; _h < _j.length; _h++) {
-                            var tarefa = _j[_h];
-                            if (tarefa[$scope.colunaSelect.Value] == $scope.compararTexto) {
-                                totalcontador++;
-                            }
+                        if (comparacao[$scope.colunaSelect.Value] == $scope.compararStatus) {
+                            totalcontador++;
                         }
                     }
                     else {
-                        for (var _k = 0, _l = $scope.tarefas; _k < _l.length; _k++) {
-                            var tarefa = _l[_k];
-                            if (tarefa[$scope.colunaSelect.Value] != $scope.compararTexto) {
-                                totalcontador++;
-                            }
+                        if (comparacao[$scope.colunaSelect.Value] != $scope.compararStatus) {
+                            totalcontador++;
+                        }
+                    }
+                }
+                else if ($scope.colunaSelect.Type == "sim/nao") {
+                    if ($scope.comparacaoSelect.Title == "Igual") {
+                        if (comparacao[$scope.colunaSelect.Value] == $scope.compararSimNao) {
+                            totalcontador++;
+                        }
+                    }
+                    else {
+                        if (comparacao[$scope.colunaSelect.Value] != $scope.compararSimNao) {
+                            totalcontador++;
+                        }
+                    }
+                }
+                else if ($scope.colunaSelect.Type == "numero") {
+                    if ($scope.comparacaoSelect.Title == "Igual") {
+                        if (comparacao[$scope.colunaSelect.Value] == $scope.compararNumero) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Diferente") {
+                        if (comparacao[$scope.colunaSelect.Value] != $scope.compararNumero) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Maior") {
+                        if (comparacao[$scope.colunaSelect.Value] > $scope.compararNumero) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Menor") {
+                        if (comparacao[$scope.colunaSelect.Value] < $scope.compararNumero) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Maior ou Igual") {
+                        if (comparacao[$scope.colunaSelect.Value] >= $scope.compararNumero) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Menor ou Igual") {
+                        if (comparacao[$scope.colunaSelect.Value] <= $scope.compararNumero) {
+                            totalcontador++;
+                        }
+                    }
+                }
+                else if ($scope.colunaSelect.Type == "porcentagem") {
+                    var percentualSalvo = parseFloat(comparacao[$scope.colunaSelect.Value].split('%')[0]);
+                    var newPercentual = parseFloat($scope.compararPorcentagem.split('%')[0]);
+                    if ($scope.comparacaoSelect.Title == "Igual") {
+                        if (percentualSalvo == newPercentual) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Diferente") {
+                        if (percentualSalvo != newPercentual) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Maior") {
+                        if (percentualSalvo > newPercentual) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Menor") {
+                        if (percentualSalvo < newPercentual) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Maior ou Igual") {
+                        if (percentualSalvo >= newPercentual) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Menor ou Igual") {
+                        if (percentualSalvo <= newPercentual) {
+                            totalcontador++;
+                        }
+                    }
+                }
+                else if ($scope.colunaSelect.Type == "data") {
+                    var dataSavedSplited = comparacao[$scope.colunaSelect.Value].split('/');
+                    var dataSaved = (new Date(dataSavedSplited[2], parseInt(dataSavedSplited[1]) - 1, dataSavedSplited[0])).getTime();
+                    var dataNewSplited = $scope.compararData.split('/');
+                    var dataNew = (new Date(dataNewSplited[2], parseInt(dataNewSplited[1]) - 1, dataNewSplited[0])).getTime();
+                    if ($scope.comparacaoSelect.Title == "Igual") {
+                        if (dataSaved == dataNew) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Diferente") {
+                        if (dataSaved != dataNew) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Maior") {
+                        if (dataSaved > dataNew) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Menor") {
+                        if (dataSaved < dataNew) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Maior ou Igual") {
+                        if (dataSaved >= dataNew) {
+                            totalcontador++;
+                        }
+                    }
+                    else if ($scope.comparacaoSelect.Title == "Menor ou Igual") {
+                        if (dataSaved <= dataNew) {
+                            totalcontador++;
                         }
                     }
                 }
             }
             $scope.contadores.push({ Title: $scope.tituloBloco, Quantidade: totalcontador });
+            $scope.cancelarContador();
+        };
+        $scope.cancelarContador = function () {
             $scope.popupNovoBloco = false;
             $scope.listaSelect = "";
             $scope.tituloBloco = "";
             $scope.colunaSelect = "";
             $scope.comparacaoSelect = "";
+            $scope.compararTexto = "";
+            $scope.compararPorcentagem = "";
+            $scope.compararNumero = "";
+            $scope.compararData = "";
+            $scope.compararSimNao = "";
+            $scope.compararStatus = "";
             $scope.listaNaoSelecionada = true;
         };
     }]);
