@@ -1,15 +1,17 @@
 ﻿declare var $: any;
 declare var angular: any;
-
+//coloca mascara de porcentagem no campo de percentual
 $('#percentual-campo').mask('##0,00%', { reverse: true });
+//coloca mascara de data no campo de data
 $("#datepicker").datepicker({
   dateFormat: 'dd/mm/yy'
 });
-
+//App angular
 var appGerenciamento = angular.module("appGerenciamento", []);
 appGerenciamento.controller("ctrlGerenciamento", ["$scope", ($scope) => {
-
+  //data de hoje
   let today = new Date();
+  //variaveis que definem visualização
   $scope.listaNaoSelecionada = true;
   $scope.popupNovoBloco = false;
 
@@ -17,6 +19,7 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", ($scope) => {
   $scope.projetos = [];
   $scope.alimentaProjetos = () => {
     $scope.projetos = [];
+    //consulta o arquivo json no site
     return $.ajax({
       url: "http://lucasmendoncapportfolio.atwebpages.com/json/projetos.json", success: function (projetos) {
         let projetosObtidos = JSON.parse(projetos);
@@ -49,10 +52,12 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", ($scope) => {
   $scope.clientes = [];
   $scope.alimentaClientes = () => {
     $scope.clientes = [];
+    //consulta o arquivo json no site
     return $.ajax({
       url: "http://lucasmendoncapportfolio.atwebpages.com/json/clientes.json", success: function (clientes) {
         let clientesObtidos = JSON.parse(clientes);
         for (let cliente of clientesObtidos['Clientes']) {
+          //Verifica quantidade de projetos, horas usadas e horas contratadas
           let projetosCount = 0;
           let horasUsadas = 0;
           let horasContratadas = 0;
@@ -63,6 +68,7 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", ($scope) => {
               horasContratadas += projeto.HorasContratadas;
             }
           }
+          //Define a porcentagel de horas usadas em relação sa horas contratadas
           let horasRestantes = horasContratadas - horasUsadas;
           let horasUsadasPercent = ((horasUsadas * 100) / horasContratadas).toFixed(2) + "%";
           $scope.clientes.push(
@@ -76,6 +82,7 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", ($scope) => {
   $scope.tarefas = [];
   $scope.alimentaTarefas = () => {
     $scope.tarefas = [];
+    //consulta o arquivo json no site
     return $.ajax({
       url: "http://lucasmendoncapportfolio.atwebpages.com/json/tarefas.json", success: function (tarefas) {
         let tarefasObtiodas = JSON.parse(tarefas);
