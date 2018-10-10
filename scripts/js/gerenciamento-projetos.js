@@ -1,16 +1,22 @@
+//coloca mascara de porcentagem no campo de percentual
 $('#percentual-campo').mask('##0,00%', { reverse: true });
+//coloca mascara de data no campo de data
 $("#datepicker").datepicker({
     dateFormat: 'dd/mm/yy'
 });
+//App angular
 var appGerenciamento = angular.module("appGerenciamento", []);
 appGerenciamento.controller("ctrlGerenciamento", ["$scope", function ($scope) {
+        //data de hoje
         var today = new Date();
+        //variaveis que definem visualização
         $scope.listaNaoSelecionada = true;
         $scope.popupNovoBloco = false;
         //Carrega os projetos existentes
         $scope.projetos = [];
         $scope.alimentaProjetos = function () {
             $scope.projetos = [];
+            //consulta o arquivo json no site
             return $.ajax({
                 url: "http://lucasmendoncapportfolio.atwebpages.com/json/projetos.json", success: function (projetos) {
                     var projetosObtidos = JSON.parse(projetos);
@@ -43,11 +49,13 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", function ($scope) {
         $scope.clientes = [];
         $scope.alimentaClientes = function () {
             $scope.clientes = [];
+            //consulta o arquivo json no site
             return $.ajax({
                 url: "http://lucasmendoncapportfolio.atwebpages.com/json/clientes.json", success: function (clientes) {
                     var clientesObtidos = JSON.parse(clientes);
                     for (var _i = 0, _a = clientesObtidos['Clientes']; _i < _a.length; _i++) {
                         var cliente = _a[_i];
+                        //Verifica quantidade de projetos, horas usadas e horas contratadas
                         var projetosCount = 0;
                         var horasUsadas = 0;
                         var horasContratadas = 0;
@@ -59,6 +67,7 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", function ($scope) {
                                 horasContratadas += projeto.HorasContratadas;
                             }
                         }
+                        //Define a porcentagel de horas usadas em relação sa horas contratadas
                         var horasRestantes = horasContratadas - horasUsadas;
                         var horasUsadasPercent = ((horasUsadas * 100) / horasContratadas).toFixed(2) + "%";
                         $scope.clientes.push({ Title: cliente.Nome, Projetos: projetosCount, HorasContratadas: horasContratadas, HorasRestantes: horasRestantes, HorasUsadas: horasUsadasPercent });
@@ -70,6 +79,7 @@ appGerenciamento.controller("ctrlGerenciamento", ["$scope", function ($scope) {
         $scope.tarefas = [];
         $scope.alimentaTarefas = function () {
             $scope.tarefas = [];
+            //consulta o arquivo json no site
             return $.ajax({
                 url: "http://lucasmendoncapportfolio.atwebpages.com/json/tarefas.json", success: function (tarefas) {
                     var tarefasObtiodas = JSON.parse(tarefas);

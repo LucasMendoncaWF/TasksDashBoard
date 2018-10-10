@@ -499,3 +499,11 @@ body {
   border: 0px;
   font-weight: bold;
   color: #828282; }
+
+@media screen and (max-width: 860px) {
+  .grafico-tabela {
+    flex-wrap: wrap; }
+    .grafico-tabela #projetos {
+      width: 100%; }
+    .grafico-tabela #grafico-container {
+      width: 100%; } }

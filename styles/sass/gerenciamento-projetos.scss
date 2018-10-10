@@ -646,3 +646,17 @@
   font-weight: bold;
   color: #828282;
 }
+
+@media screen and (max-width: 860px) {
+  .grafico-tabela {
+    flex-wrap: wrap;
+
+    #projetos {
+      width: 100%;
+    }
+
+    #grafico-container {
+      width: 100%;
+    }
+  }
+}
